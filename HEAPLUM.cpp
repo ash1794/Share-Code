@@ -2,9 +2,8 @@
 
 using namespace std;
 
-class Node
+struct Node
 {
-public:
     Node *left,*right;
     string label;
     int priority;
@@ -13,13 +12,12 @@ public:
     {}
     
 };
-class treap
+struct treap
 {
-public:
-    Node   *roots;
+    struct Node   *roots;
     size_t tree_size;
 
-    treap():roots(NULL),tree_size(0)
+    treap():tree_size(0)
     {
     }
     
