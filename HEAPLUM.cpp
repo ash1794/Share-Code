@@ -9,15 +9,9 @@ public:
     string label;
     int priority;
 
-    Node():left(NULL),right(NULL),label(NULL),priority(0)
+    Node():left(NULL),right(NULL),priority(0)
     {}
-    ~Node()
-    {
-        if(left)
-            delete left;
-        if(right)
-            delete right;
-    }
+    
 };
 class treap
 {
@@ -28,12 +22,8 @@ public:
     treap():roots(NULL),tree_size(0)
     {
     }
-    ~treap()
-    {
-        if(roots)
-            delete roots;
-    }
-    void insert(string label,int pri)
+    
+    void insert(string &label,int &pri)
     {
         Node *temp = new Node();
         temp->label=label;
@@ -63,18 +53,31 @@ public:
         }
         else
         {
-            if(temp->label < prev->label)
-                prev->left = temp;
+            if(prev==NULL)
+            {
+                roots = temp;
+                if(where->label < roots->label)
+                    roots->left = where;
+                else
+                    roots->right = where;
+            }
             else
-                prev->right = temp;
-            if(where->label < temp->label)
-                temp->left = where;
-            else
-                temp->right = where;
+            {
+                if(where->label < prev->label)
+                    prev->left = temp;
+                else
+                    prev->right = temp;
+                if(where->label < temp->label)
+                    temp->left = where;
+                else
+                    temp->right = where;
+                
+            }
         }
+        tree_size++;
     }
 
-    void print(Node *trav = roots)
+    void print(Node *trav)
     {
         if(trav == NULL)
             return;
@@ -84,8 +87,40 @@ public:
         print(trav->right);
         cout<<")";
     }
+    void print()
+    {
+        print(roots);
+    }
 };
 int main()
 {
+    int n;
+    cin>>n;
+    while(n)
+    {
+        treap a;
+        string str;
+        for(int i=0;i<n;i++)
+        {
+            cin>>str;
+            int j=0;
+            string label;
+            int pri=0;
+            while(str[j]!='/')
+                label+=str[j],j++;
+            j+=1;
+            while(j<(int)str.size())
+            {
+                pri*=10;
+                pri+= (str[j]-'0');
+                j++;
+            }
+            a.insert(label,pri);
+        }
+        a.print();
+
+        cout<<"\n";
+        cin>>n;
+    }
     return 0;
 }
