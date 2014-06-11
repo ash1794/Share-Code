@@ -15,15 +15,11 @@ void build(int node,int tl,int tr)
     if(tl == tr)
     {
         segTree[node]=tl;
-        //cout<<node<<" "<<tl<<" "<<tr<<" "<<segTree[node]<<"\n";
         return;
     }
     CHILDREN;
     build(cl,tl,tm);
     build(cr,tm+1,tr);
-    
-    //cout<<node<<" "<<tl<<" "<<tr<<"$\n";
-    //cout<<cl<<" "<<segTree[cl]<<" "<<cr<<" "<<segTree[cr]<<"\n";
     segTree[node] = (arr[segTree[cl]] > arr[segTree[cr]])?segTree[cl]:segTree[cr];
 }
 
@@ -49,28 +45,17 @@ void print(int lo,int hi)
     if(lo>hi)
         return;
     int ind = query(1,0,N-1,lo,hi);
-    cout<<"(";
+    printf("(");
     print(lo,ind-1);
-    cout<<arr[ind].second<<"/"<<arr[ind].first;
+    printf("%s/%d",arr[ind].second.c_str(),arr[ind].first);
     print(ind+1,hi);
-    cout<<")";
+    printf(")");
 }
-/*
-void print(vector<pair<int,string> >::iterator begin,vector<pair<int,string> >::iterator end)
-{
-    if(begin==end)
-        return;
-    vector<pair<int,string> >::iterator cur = max_element(begin,end);
-    cout<<"(";
-    print(begin,cur);
-    cout<<cur->second<<"/"<<cur->first;
-    print(cur+1,end);
-    cout<<")";
-}*/
+
 int main()
 {
     int n;
-    cin>>n;
+    scanf("%d",&n);
     N=n;
     while(n)
     {
@@ -78,27 +63,24 @@ int main()
         arr.clear();
         for(int i=0;i<n;i++)
         {
-            cin>>str;
-            int j=0;
+            char str[59];
+            scanf("%s",str);
             string label;
-            int pri=0;
-            while(str[j]!='/')
-                label+=str[j],j++;
-            j+=1;
-            while(j<(int)str.size())
+            int j=0,pri=0;
+            while(str[j]!='/')label+=str[j],j++;
+            j++;
+            while(str[j])
             {
                 pri*=10;
                 pri+= (str[j]-'0');
                 j++;
             }
-            //a.insert(label,pri);
             arr.push_back(make_pair(pri,label));
         }
         build(1,0,n-1);
         print(0,n-1);
-        //print(arr.begin(),arr.end());
-        cout<<"\n";
-        cin>>n;
+        printf("\n");
+        scanf("%d",&n);
     }
     return 0;
 }
